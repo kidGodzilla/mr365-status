@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="robots" content="index, follow">
+		<title>Meeting Room 365 Status</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,700,700italic">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+		<link rel="stylesheet" href="style.css">
+		<link rel="icon" href="https://raw.githubusercontent.com/jayfk/statuspage/master/template/favicon.png">
+		<link rel="prefetch" type="application/l10n" href="translations.ini" />
+
+		<style type="text/css">
+			body, .systems li, h1 {
+				font-weight: 400;
+			}
+			.systems li a {
+				color: #555;
+				cursor: pointer;
+			}
+			.systems li a:hover {
+				color: #999;
+			}
+		</style>
+	</head>
+	<body>
+
+		<main class="wrapper">
+
+			<nav class="navigation">
+				<section class="container">
+
+					<a class="navigation-title" href="">
+						<img class="img" src="https://meetingroom365.com/mr365-hb-b.png" height="30">
+						<h1 class="title" style="letter-spacing: 0.05em;margin-left: 3px;">System Status</h1>
+					</a>
+
+				</section>
+			</nav>
+
+			<section class="container" id="main">
+				
+				<div class="operational-outlet">
+					<div class="panel operational" style="opacity:0">All systems are operational.</div>
+				</div>
+
+				<h4 data-l10n-id="systems">Systems</h4>
+				<ul class="systems"></ul>
+
+				<!-- <h4 data-l10n-id="incidents">Incidents</h4> -->
+				
+					
+					<!-- <div class="incident">
+						<span class="date moment">2016-07-26 09:29:15 UTC</span>
+
+						
+							<span class="label degraded performance float-right" data-l10n-id="degraded-performance">degraded performance</span>
+						
+						
+							<span class="label system float-right">CDN</span>
+						
+						<hr/>
+
+						<span class="title">CDN is under heavy load</span>
+						<p>The CDN is currently under heavy load, we are working on a quick fix by spawning more instances.</p>
+
+						
+					</div>
+					
+					<div class="incident">
+						<span class="date moment">2016-03-07 09:33:04 UTC</span>
+
+						
+							<span class="label operational float-right" data-l10n-id="resolved">resolved</span>
+						
+						
+							<span class="label system float-right">API</span>
+						
+						<hr/>
+
+						<span class="title">API is down</span>
+						<p>The API is currently not reachable due to networking issues. We're aware of the problem and are working on it.</p>
+
+						
+							<p><em>Update <span class="moment">2016-07-25 10:01:53 UTC</span></em></p>
+							<p>Investigating the root cause.</p>
+
+						
+							<p><em>Update <span class="moment">2016-07-26 09:21:17 UTC</span></em></p>
+							<p>We were able to identify the issue, working on a fix.</p>
+
+						
+					</div>
+					 -->
+				
+			</section>
+
+			<footer class="footer">
+				<section class="container">
+					<hr/>
+					<p>&copy; 2015 - 2018 Meeting Room 365. All Rights Reserved.</p>
+				</section>
+			</footer>
+
+		</main>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+		<script type="text/javascript">
+
+			// http://slack.gumshoeanalytics.com/i.png
+			// http://gumshoeanalytics.com/i.png
+			// http://app.gumshoeanalytics.com/i.png
+			// http://peppermint.gumshoeanalytics.com/events/i.png
+			// http://spearmint.gumshoeanalytics.com/i.png
+
+			var downCount = 0;
+
+			function isUp (index) {
+				console.log(servers[index].name, 'is up.');	
+
+				$('.systems').append('<li><a href="'+servers[index].link+'" target="_blank">'+servers[index].name+'</a> <span class="status operational" data-l10n-id="operational">operational</span></li>');
+
+				updateStatus();
+			}
+			
+			function isDown (index) {
+				console.log(servers[index].name, 'is down.');
+				$('.systems').append('<li><a href="'+servers[index].link+'" target="_blank">'+servers[index].name+'</a> <span class="status degraded performance" data-l10n-id="degraded-performance">degraded performance</span></li>');
+				downCount++;
+				updateStatus();
+			}
+
+			function updateStatus () {
+				if (downCount) {
+					$('.operational-outlet').html('<div class="panel degraded performance">Degraded Performance</div>');
+				} else {
+					$('.operational-outlet').html('<div class="panel operational">All systems are operational.</div>');
+				}
+			}
+
+			var servers = [
+				{
+					name: 'www.meetingroom365.com',
+					link: 'https://www.meetingroom365.com/',
+					test: 'https://www.meetingroom365.com/i.png'
+				},
+				{
+					name: 'app.meetingroom365.com',
+					link: 'https://app.meetingroom365.com/',
+					test: 'https://app.meetingroom365.com/images/bg.jpg'
+				},
+				{
+					name: 'beta.meetingroom365.com',
+					link: 'https://beta.meetingroom365.com/',
+					test: 'https://beta.meetingroom365.com/static/grey-75.jpg'
+				}
+			];
+
+			$(document).ready(function () {
+				servers.forEach(function (server, index) {
+					$('body').append('<img style="opacity:0;" src="'+server.test+'" onload="isUp('+index+')" onerror="isDown('+index+')">');
+				});
+			});
+
+		</script>
+
+
+
+	</body>
+</html>
